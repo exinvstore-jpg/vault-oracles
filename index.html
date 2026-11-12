@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vault Oracles</title>
+<style>
+  :root { --bg:#0e1418; --panel:#152027; --line:#24343e; --text:#e6f6fb; --dim:#8aa3ad; --vex:#5fd4ff; --bad:#ff5a4d; --good:#6ee7a8; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:13px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--text); background:var(--bg); }
+  header { padding:12px 14px 10px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:10px; }
+  header h1 { font-size:14px; letter-spacing:.12em; text-transform:uppercase; margin:0; font-weight:600; }
+  header .glyph { width:22px; height:22px; border-radius:50%; background:radial-gradient(circle,#fff 0 30%,var(--vex) 31% 55%,transparent 56%); box-shadow:0 0 12px var(--vex); }
+  main { padding:12px 14px; display:flex; flex-direction:column; gap:12px; }
+  .status { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 12px; }
+  .phase { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); }
+  .phase.active { color:var(--vex); } .phase.failed { color:var(--bad); } .phase.success { color:var(--good); }
+  .msg { margin-top:4px; font-size:14px; }
+  .pips { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  .pip { width:18px; height:18px; border-radius:50%; border:2px solid var(--line); }
+  .pip.live { background:#eafcff; border-color:var(--vex); box-shadow:0 0 8px var(--vex); }
+  .pip.dead { background:#33444d; border-color:#33444d; }
+  .pip.red { background:var(--bad); border-color:#8b0000; }
+  .timer { margin-top:8px; color:var(--dim); } .timer b { color:var(--text); }
+  .btns { display:flex; gap:8px; }
+  button { flex:1; padding:8px 10px; border-radius:6px; border:1px solid var(--line); background:var(--panel); color:var(--text); font:inherit; cursor:pointer; }
+  button:hover { border-color:var(--vex); }
+  button.primary { background:var(--vex); color:#04212c; border-color:var(--vex); font-weight:600; }
+  button:disabled { opacity:.4; cursor:default; }
+  fieldset { border:1px solid var(--line); border-radius:8px; padding:8px 12px 10px; margin:0; display:grid; grid-template-columns:1fr auto; gap:8px 10px; align-items:center; }
+  legend { color:var(--dim); font-size:11px; letter-spacing:.12em; text-transform:uppercase; padding:0 4px; }
+  label { color:var(--dim); }
+  select, input[type=number] { background:var(--panel); color:var(--text); border:1px solid var(--line); border-radius:5px; padding:4px 6px; font:inherit; }
+  input[type=number] { width:64px; }
+  .hint { color:var(--dim); font-size:12px; }
+  [hidden] { display:none !important; }
+</style>
+</head>
+<body>
+<header><div class="glyph"></div><h1>Vault Oracles</h1></header>
+<main>
+  <div class="status">
+    <div class="phase" id="phase">Dormant</div>
+    <div class="msg" id="msg">The Oracles are silent.</div>
+    <div class="pips" id="pips"></div>
+    <div class="timer" id="timer"></div>
+  </div>
+
+  <p class="hint" id="playerHint">Pick the <b>Vault Oracles</b> tool on the left toolbar, then click an Oracle to shoot it. Shoot them in the order they appeared.</p>
+
+  <div class="btns gm-only">
+    <button class="primary" id="start">Start ritual</button>
+    <button id="next" title="Advance one turn (manual mode)">Next turn</button>
+    <button id="reset">Reset</button>
+  </div>
+
+  <fieldset class="gm-only">
+    <legend>Setup</legend>
+    <label>Oracle spots placed</label><b id="anchors">0</b>
+    <label for="count">Oracles per ritual (0 = all)</label><input type="number" id="count" min="0" max="20" />
+    <label for="order">Spawn order</label>
+    <select id="order"><option value="random">Random</option><option value="placed">Order placed</option></select>
+    <label for="timerMode">Shoot window</label>
+    <select id="timerMode"><option value="last">After last spawns</option><option value="each">Per oracle</option></select>
+    <label for="rounds">Rounds to shoot</label><input type="number" id="rounds" min="1" max="5" />
+    <label for="wrong">Wrong order wipes</label><input type="checkbox" id="wrong" />
+    <label for="gmNumbers">Show me the order (#)</label><input type="checkbox" id="gmNumbers" />
+  </fieldset>
+
+  <fieldset class="gm-only">
+    <legend>Turns</legend>
+    <label for="source">Initiative source</label>
+    <select id="source"><option value="tracker">Initiative Tracker ext.</option><option value="manual">Manual "Next turn"</option></select>
+    <label for="roundLen">Combatants per round (manual)</label><input type="number" id="roundLen" min="1" max="30" />
+  </fieldset>
+
+  <p class="hint gm-only">Place spots with the <b>Vault Oracles</b> tool → <i>Place</i> mode (click empty map to add, click a spot to remove). Spots are hidden from players.</p>
+</main>
+<script type="module" src="./popover.js"></script>
+</body>
+</html>
