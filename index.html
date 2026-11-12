@@ -53,6 +53,9 @@
     <button id="next" title="Advance one turn (manual mode)">Next turn</button>
     <button id="reset">Reset</button>
   </div>
+  <div class="btns gm-only">
+    <button id="spots">Hide spots</button>
+  </div>
 
   <fieldset class="gm-only">
     <legend>Setup</legend>
@@ -74,7 +77,7 @@
     <label for="roundLen">Combatants per round (manual)</label><input type="number" id="roundLen" min="1" max="30" />
   </fieldset>
 
-  <p class="hint gm-only">Place spots with the <b>Vault Oracles</b> tool → <i>Place</i> mode (click empty map to add, click a spot to remove). Spots are hidden from players.</p>
+  <p class="hint gm-only">Place spots with the <b>Vault Oracles</b> tool → <i>Place</i> mode (click empty map to add, click a spot to remove). Spots are always hidden from players, and vanish for you too when the ritual starts (Reset brings them back).</p>
 </main>
 <script type="module" src="./popover.js"></script>
 </body>

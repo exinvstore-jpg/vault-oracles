@@ -20,6 +20,7 @@ export const DEFAULT_SETTINGS = {
   manualRoundLength: 4, // combatants per round when using manual turns
   wrongOrderFails: true,
   gmNumbers: true, // show GM-only order numbers on oracles
+  spotsHidden: false, // spots fully invisible (even to GM) while a ritual runs
 };
 
 export const freshState = () => ({

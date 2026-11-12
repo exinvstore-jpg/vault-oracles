@@ -170,6 +170,7 @@ async function start() {
     lastActiveId,
     message: "The Oracles awaken.",
   };
+  await setSpotsVisible(false);
   await spawnNext(state);
   await save(state);
 }
@@ -274,6 +275,27 @@ async function fail(state, message) {
   await fx({ type: "fail", text: `☠ ${message}` });
 }
 
+async function setSpotsVisible(show) {
+  const items = await OBR.scene.items.getItems((i) => !!i.metadata?.[ANCHOR_KEY] || !!i.metadata?.[`${ID}/anchor-label`]);
+  if (items.length) {
+    await OBR.scene.items.updateItems(items.map((i) => i.id), (drafts) => {
+      for (const it of drafts) {
+        if (it.metadata[ANCHOR_KEY]) {
+          it.style.fillOpacity = show ? 0.08 : 0;
+          it.style.strokeOpacity = show ? 0.9 : 0;
+          it.disableHit = !show;
+        } else {
+          it.text.style.fillOpacity = show ? 1 : 0;
+          it.text.style.strokeOpacity = show ? 1 : 0;
+          it.style.backgroundOpacity = show ? 0.7 : 0;
+        }
+      }
+    });
+  }
+  const md = await OBR.scene.getMetadata();
+  await OBR.scene.setMetadata({ [SETTINGS_KEY]: { ...getSettings(md), spotsHidden: !show } });
+}
+
 async function clearOracles() {
   const items = await OBR.scene.items.getItems((i) => !!i.metadata?.[ORACLE_KEY]);
   if (items.length) await OBR.scene.items.deleteItems(items.map((i) => i.id));
@@ -281,6 +303,7 @@ async function clearOracles() {
 
 async function reset() {
   await clearOracles();
+  await setSpotsVisible(true);
   await save(freshState());
 }
 
@@ -301,6 +324,7 @@ function handleCmd({ data }) {
   if (data.cmd === "start") enqueue(start);
   if (data.cmd === "next") enqueue(() => advanceTurn());
   if (data.cmd === "reset") enqueue(reset);
+  if (data.cmd === "spots") enqueue(() => setSpotsVisible(!!data.show));
 }
 
 // ---------------------------------------------------------------- boot

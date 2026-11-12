@@ -34,6 +34,7 @@ function render() {
   if (!isGM) return;
 
   $("start").textContent = state.phase === "idle" ? "Start ritual" : "Restart";
+  $("spots").textContent = settings.spotsHidden ? "Show spots" : "Hide spots";
   $("next").disabled = !(state.phase === "active" && settings.source === "manual");
   const set = (id, v, prop = "value") => { if (document.activeElement !== $(id)) $(id)[prop] = v; };
   set("count", settings.count);
@@ -70,6 +71,8 @@ function bind() {
   $("start").addEventListener("click", () => cmd("start"));
   $("next").addEventListener("click", () => cmd("next"));
   $("reset").addEventListener("click", () => cmd("reset"));
+  $("spots").addEventListener("click", () =>
+    OBR.broadcast.sendMessage(CMD_CHANNEL, { cmd: "spots", show: !!settings.spotsHidden }, { destination: "LOCAL" }));
 }
 
 OBR.onReady(async () => {
