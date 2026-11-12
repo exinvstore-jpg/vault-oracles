@@ -1,15 +1,15 @@
 {
   "name": "Vault Oracles",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "manifest_version": 1,
   "author": "AWOL",
   "description": "Vault of Glass Oracles: they sing in order as initiative moves. Shoot them back in order within one round.",
-  "icon": "icons/oracle.svg",
-  "background_url": "background.html",
+  "icon": "/vault-oracles/icons/oracle.svg",
+  "background_url": "/vault-oracles/background.html",
   "action": {
     "title": "Vault Oracles",
-    "icon": "icons/oracle.svg",
-    "popover": "index.html",
+    "icon": "/vault-oracles/icons/oracle.svg",
+    "popover": "/vault-oracles/index.html",
     "height": 560,
     "width": 340
   }
