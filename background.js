@@ -96,7 +96,7 @@ async function setupTool() {
         .build();
       const label = buildLabel()
         .plainText(`Spot ${order}`).position({ x: event.pointerPosition.x, y: event.pointerPosition.y + size / 2 })
-        .attachedTo(ring.id).layer("TEXT").visible(false).locked(true).disableHit(true)
+        .attachedTo(ring.id).disableAttachmentBehavior(["VISIBLE"]).layer("TEXT").visible(false).locked(true).disableHit(true)
         .metadata({ [`${ID}/anchor-label`]: true })
         .build();
       await OBR.scene.items.addItems([ring, label]);
@@ -203,7 +203,9 @@ async function spawnNext(state) {
   if (settings.gmNumbers) {
     items.push(buildLabel()
       .plainText(`#${idx + 1}`).position({ x: pos.x, y: pos.y - size })
-      .attachedTo(orb.id).layer("TEXT").visible(false).locked(true).disableHit(true)
+      .attachedTo(orb.id).disableAttachmentBehavior(["VISIBLE"])
+      .layer("TEXT").visible(false).locked(true).disableHit(true)
+      .name("Oracle order (GM only)")
       .build());
   }
   await OBR.scene.items.addItems(items);
